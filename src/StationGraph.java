@@ -66,14 +66,27 @@ public class StationGraph {
 	// Print stations on a trainline, starting from the end station that is
 	// further out from central Boston, using the Station graph
 	public void printTrainLine1(String trainLine) {
+		// TODO prints out of order rn, needs to start from end line furthest from Boston
 		System.out.println("printTrainLine1 for " + trainLine);
-		// TODO implementation
-				}
+		for (int i = 1; i <= stations.length; i++) {
+			if (stationOf(i) == null)
+				continue;
+			// gets Station for i (id), gets the train lines (Red, Green, ...),
+			// and checks if trainLine is in this array
+			if (stationOf(i).getTrainLines().contains(trainLine)) {
+				System.out.println("Neighbor station: " + stationOf(i).getStationName() + " id " + i + ", train lines "
+					+ stationOf(i).getTrainLines());
+			}
+		}
+	}
 
 	public static void main(String[] args) {
 		MetroSystem mS = new MetroSystem(args[0]);
 		StationGraph stationGraph = mS.getStationGraph();
 		stationGraph.printStationNeighbors("JFK/UMass");
+		stationGraph.printStationNeighbors("ParkStreet");
+		System.out.println("-------");
+		stationGraph.printTrainLine1("Red");
 	}
 }
 
