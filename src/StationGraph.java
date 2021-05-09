@@ -1,6 +1,8 @@
 
 // For cs310 pa4 Boston metro graph 
 import java.util.Map;
+import java.util.Set;
+import java.util.HashSet;
 import edu.princeton.cs.algs4.*;
 
 public class StationGraph {
@@ -59,25 +61,68 @@ public class StationGraph {
 	// Two such stations exist for each line. Return the one further from
 	// Government Center.
 	public Station endOfLineStation(String line) {
-		// TODO impl
-					return null;
-				}
-
-	// Print stations on a trainline, starting from the end station that is
-	// further out from central Boston, using the Station graph
-	public void printTrainLine1(String trainLine) {
-		// TODO prints out of order rn, needs to start from end line furthest from Boston
-		System.out.println("printTrainLine1 for " + trainLine);
+		// Note: does not validate line, and hence can return null
+		// Note: does not account for split lines: RedA and RedB
+		// 			 are treated as separate lines for instance.
+		
+		// Every line has two end stations, but this function will only 
+		// return the one furthest from Boston
+		Station[] endStations = new Station[2];
+		
 		for (int i = 1; i <= stations.length; i++) {
 			if (stationOf(i) == null)
 				continue;
 			// gets Station for i (id), gets the train lines (Red, Green, ...),
 			// and checks if trainLine is in this array
-			if (stationOf(i).getTrainLines().contains(trainLine)) {
-				System.out.println("Neighbor station: " + stationOf(i).getStationName() + " id " + i + ", train lines "
-					+ stationOf(i).getTrainLines());
+			if (stationOf(i).getTrainLines().contains(line)) {
+				int numberOfAdjacentStations = 0;
+				for (Integer adj : stationGraph.adj(i)) {
+					if (stationOf(adj).getTrainLines().contains(line)) {
+						numberOfAdjacentStations++;
+					}
+				}
+				
+				if (numberOfAdjacentStations == 1) {
+					if (endStations[0] == null) {
+						endStations[0] = stationOf(i);
+					} else {
+						endStations[1] = stationOf(i);
+					}
+				}
 			}
 		}
+		return endStations[0].distanceFromBoston() > endStations[1].distanceFromBoston() 
+					? endStations[0] 
+					: endStations[1];
+	}
+
+	// Print stations on a trainline, starting from the end station that is
+	// further out from central Boston, using the Station graph
+	public void printTrainLine1(String trainLine) {
+		// Nested lambda function to pretty print each station
+		// (can you tell I'm a JS dev lol)
+		java.util.function.Consumer<Station> printStation = (s) -> {
+			System.out.println("" + s.getStationName() + " id " + s.getStationId() + ", train lines " + s.getTrainLines());
+		};
+		
+		System.out.println("printTrainLine1 for " + trainLine);
+		Station endStation = endOfLineStation(trainLine);
+		Set<Station> visitedStations = new HashSet<>();
+		Station currentStation = endStation;
+		
+		printStation.accept(currentStation);
+		do {
+			for (Integer adj : stationGraph.adj(currentStation.getStationId())) {
+				if (stationOf(adj).getTrainLines().contains(trainLine)) {
+					if (!visitedStations.contains(stationOf(adj))) {
+						visitedStations.add(currentStation);
+						currentStation = stationOf(adj);
+						printStation.accept(currentStation);
+					}
+				}
+			}
+			// TODO fix this while condition
+		} while (stationGraph.degree(currentStation.getStationId()) > 1);
 	}
 
 	public static void main(String[] args) {
