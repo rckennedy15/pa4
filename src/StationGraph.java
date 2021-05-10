@@ -102,7 +102,7 @@ public class StationGraph {
 		// Nested lambda function to pretty print each station
 		// (can you tell I'm a JS dev lol)
 		java.util.function.Consumer<Station> printStation = (s) -> {
-			System.out.println("" + s.getStationName() + " id " + s.getStationId() + ", train lines " + s.getTrainLines());
+			System.out.print("" + s.getStationName() + s.getTrainLines() + " ");
 		};
 		
 		System.out.println("printTrainLine1 for " + trainLine);
@@ -111,7 +111,7 @@ public class StationGraph {
 		Station currentStation = endStation;
 		
 		printStation.accept(currentStation);
-		do {
+		for (int i = 1; i <= stations.length; i++) {
 			for (Integer adj : stationGraph.adj(currentStation.getStationId())) {
 				if (stationOf(adj).getTrainLines().contains(trainLine)) {
 					if (!visitedStations.contains(stationOf(adj))) {
@@ -121,8 +121,7 @@ public class StationGraph {
 					}
 				}
 			}
-			// TODO fix this while condition
-		} while (stationGraph.degree(currentStation.getStationId()) > 1);
+		}
 	}
 
 	public static void main(String[] args) {
