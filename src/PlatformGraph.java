@@ -168,7 +168,10 @@ public class PlatformGraph {
 		// System.out.println(G.toString());
 		Platform p = platformGraph.platformOf(2);
 		System.out.println("Platform 2 is for station " + p.getStation().getStationName());
+		platformGraph.printStationPlatformConnections("Andrew");
 		platformGraph.printStationPlatformConnections("ParkStreet");
+		platformGraph.printStationPlatformConnections("JFK/UMass");
+		// TODO Draw the JFK/UMass connection like in the slides and put in diagram.pdf
 	}
 }
 
