@@ -15,7 +15,7 @@ public class ShortestWPath {
 		return d.pathTo(endVertex);
 	}
 	
-	// FIXME not applying weight 3 to silver line for some reason	
+	// NOTE: I did it again. I will never get used to using .equals to compare strings.
 	public static EdgeWeightedDigraph convertToWeighted(PlatformGraph pg) {
 		// for each edge in directed graph, add weight based on formula 1, 3, or 7
 		// 7 for platform-platform in same station
@@ -26,7 +26,7 @@ public class ShortestWPath {
 			for(int adj : pg.getDigraph().adj(i)) {
 				if (pg.platformOf(i).getStation() == pg.platformOf(adj).getStation()) {
 					weighted.addEdge(new DirectedEdge(i, adj, 7));
-				} else if (pg.platformOf(i).getTrainLineColor() == "Sil" && pg.platformOf(adj).getTrainLineColor() == "Sil") {
+				} else if (pg.platformOf(i).getTrainLineColor().equals("Sil") && pg.platformOf(adj).getTrainLineColor().equals("Sil")) {
 					weighted.addEdge(new DirectedEdge(i, adj, 3));
 				} else {
 					weighted.addEdge(new DirectedEdge(i, adj, 1));
