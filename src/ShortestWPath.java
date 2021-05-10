@@ -15,7 +15,6 @@ public class ShortestWPath {
 		return d.pathTo(endVertex);
 	}
 	
-	// NOTE: I did it again. I will never get used to using .equals to compare strings.
 	public static EdgeWeightedDigraph convertToWeighted(PlatformGraph pg) {
 		// for each edge in directed graph, add weight based on formula 1, 3, or 7
 		// 7 for platform-platform in same station
@@ -37,17 +36,23 @@ public class ShortestWPath {
 	}
 	
 	public static void printRoute(Iterable<DirectedEdge> path) {
+		// prints the starting vertex of each edge, once final edge is reached,
+		// prints the starting vertex and destination vertex of final edge.
+		Station fromStation = null;
+		Station toStation = null;
 		for (DirectedEdge de : path) {
-			Station fromStation = pg.platformOf(de.from()).getStation();
-			Station toStation = pg.platformOf(de.to()).getStation();
-			System.out.print(fromStation.getStationName() + fromStation.getTrainLines() + " -> " + toStation.getStationName() + toStation.getTrainLines() + "(" + de.weight() + ") ");
+			fromStation = pg.platformOf(de.from()).getStation();
+			toStation = pg.platformOf(de.to()).getStation();
+			System.out.print(fromStation.getStationName() + fromStation.getTrainLines() + " ");
 		}
+		System.out.println(toStation.getStationName() + toStation.getTrainLines());
 	}
 	
 	public static void main(String[] args) {
 		mS = new MetroSystem(args[0]);
 		pg = mS.getPlatformGraph();
 		// lambda function to find vertex for station string
+		// (can you tell I'm a JS dev lol)
 		java.util.function.Function<String, Integer> findVertex = (station) -> {
 			for (int i = 2; i < pg.getDigraph().V(); i++) {
 				Platform p = pg.platformOf(i);

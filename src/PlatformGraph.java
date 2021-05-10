@@ -171,7 +171,6 @@ public class PlatformGraph {
 		platformGraph.printStationPlatformConnections("Andrew");
 		platformGraph.printStationPlatformConnections("ParkStreet");
 		platformGraph.printStationPlatformConnections("JFK/UMass");
-		// TODO Draw the JFK/UMass connection like in the slides and put in diagram.pdf
 	}
 }
 

@@ -99,8 +99,7 @@ public class StationGraph {
 	// Print stations on a trainline, starting from the end station that is
 	// further out from central Boston, using the Station graph
 	public void printTrainLine1(String trainLine) {
-		// Nested lambda function to pretty print each station
-		// (can you tell I'm a JS dev lol)
+		// lambda function to pretty print each station
 		java.util.function.Consumer<Station> printStation = (s) -> {
 			System.out.print("" + s.getStationName() + s.getTrainLines() + " ");
 		};
@@ -129,7 +128,7 @@ public class StationGraph {
 		StationGraph stationGraph = mS.getStationGraph();
 		stationGraph.printStationNeighbors("JFK/UMass");
 		stationGraph.printStationNeighbors("ParkStreet");
-		System.out.println("-------");
+		System.out.println("\n-------");
 		stationGraph.printTrainLine1("Red");
 	}
 }
